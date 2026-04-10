@@ -140,108 +140,141 @@ nav.scrolled{
 }
 
 /* ═══════════════════════════════════════════
-   HERO (STRUCTURAL / METALLIC)
+   HERO (SPLIT SCREEN LAYOUT)
 ═══════════════════════════════════════════ */
-.hero{
-  position:relative;min-height:100vh;
-  display:flex;align-items:center;
-  overflow:hidden;
-  /* Overlay dinâmico para garantir legibilidade e imagem no fundo */
-  background: linear-gradient(to right, rgba(13, 17, 21, 0.95) 0%, rgba(13, 17, 21, 0.7) 40%, rgba(13, 17, 21, 0.2) 100%),
-              url('https://i.postimg.cc/0Nmv2k9t/240_F_548514841_w_Sm_TGRYvn_Bvn_Br_ESz_Fof_Eq_WFm_INecz_SW.webp') center/cover no-repeat;
-  padding-top:80px;
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  background: var(--bg);
 }
-/* Clean Structural Grid */
-.hero-grid{
-  position:absolute;inset:0;
+
+/* Left Content Area */
+.hero-left {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Alinhamento inteligente para manter a grade igual ao .container */
+  padding: 120px 48px 80px calc(50vw - 620px + 32px);
+  background: var(--bg);
+  z-index: 10;
+}
+/* Responsive padding fix for smaller screens */
+@media(max-width: 1300px) {
+  .hero-left { padding-left: 32px; }
+}
+
+.hero-grid {
+  position: absolute; inset: 0;
   background-image:
     linear-gradient(var(--border-sub) 1px, transparent 1px),
     linear-gradient(90deg, var(--border-sub) 1px, transparent 1px);
-  background-size:120px 120px;
-  background-position: center center;
-  pointer-events:none;
-  opacity:0.6;
-}
-/* Sharp diagonal accent */
-.hero::before{
-  content:'';
-  position:absolute;top:0;right:-20%;width:50%;height:100%;
-  background:linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.02) 40.1%, rgba(255,255,255,0.02) 60%, transparent 60.1%);
-  pointer-events:none;
+  background-size: 80px 80px;
+  pointer-events: none;
+  opacity: 0.6;
 }
 
-.hero-content{
-  position:relative;z-index:10;
-  width:100%;max-width:800px;
-}
-.hero-eyebrow{
-  display:inline-flex;align-items:center;gap:12px;
-  margin-bottom:28px;
-  font-family:var(--mono);font-size:11px;
-  color:var(--white-60);letter-spacing:.15em;text-transform:uppercase;
-  padding-left:16px;
-  border-left:2px solid var(--accent);
-  animation:fadeUp .6s cubic-bezier(.16,1,.3,1) .1s both;
+.hero-content {
+  position: relative;
+  z-index: 10;
+  max-width: 600px;
 }
 
-.hero-h1{
-  font-size:clamp(40px,6vw,72px);
-  font-weight:700;line-height:1.1;
-  letter-spacing:-.03em;
-  color:var(--white);
-  margin-bottom:20px;
-  animation:fadeUp .6s cubic-bezier(.16,1,.3,1) .2s both;
-}
-.hero-h1 span{color:var(--accent)}
-
-.hero-sub{
-  font-size:clamp(16px,2vw,20px);
-  font-weight:300;color:var(--white-80);
-  line-height:1.6;margin-bottom:40px;max-width:600px;
-  animation:fadeUp .6s cubic-bezier(.16,1,.3,1) .3s both;
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 12px;
+  margin-bottom: 28px;
+  font-family: var(--mono); font-size: 11px;
+  color: var(--white-60); letter-spacing: .15em; text-transform: uppercase;
+  padding-left: 16px;
+  border-left: 2px solid var(--accent);
+  animation: fadeUp .6s cubic-bezier(.16,1,.3,1) .1s both;
 }
 
-.hero-norms{
-  display:flex;flex-wrap:wrap;gap:10px;
-  margin-bottom:48px;
-  animation:fadeUp .6s cubic-bezier(.16,1,.3,1) .4s both;
+.hero-h1 {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 700; line-height: 1.1;
+  letter-spacing: -.03em;
+  color: var(--white);
+  margin-bottom: 20px;
+  animation: fadeUp .6s cubic-bezier(.16,1,.3,1) .2s both;
 }
-.norm-pill{
-  font-family:var(--mono);font-size:11px;font-weight:500;
-  padding:6px 14px;border-radius:2px;
-  border:1px solid var(--border);
-  color:var(--white-60);letter-spacing:.08em;
-  background:rgba(26, 32, 39, 0.6); /* Transparência para ver a imagem de fundo */
-  backdrop-filter: blur(4px);
-}
-.norm-pill.active{border-color:var(--accent);color:var(--accent);background:var(--accent-glow)}
+.hero-h1 span { color: var(--accent); }
 
-.hero-btns{
-  display:flex;flex-wrap:wrap;gap:16px;align-items:center;
-  animation:fadeUp .6s cubic-bezier(.16,1,.3,1) .5s both;
+.hero-sub {
+  font-size: clamp(16px, 1.8vw, 18px);
+  font-weight: 300; color: var(--white-80);
+  line-height: 1.65; margin-bottom: 40px;
+  animation: fadeUp .6s cubic-bezier(.16,1,.3,1) .3s both;
 }
-.btn-primary{
-  background:var(--accent);color:var(--white);
-  padding:16px 36px;border-radius:2px;
-  font-size:13px;font-weight:600;
-  letter-spacing:.08em;text-transform:uppercase;
-  cursor:pointer;border:1px solid var(--accent);
-  display:inline-flex;align-items:center;gap:10px;
-  transition:background .2s, transform .15s;
+
+.hero-norms {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 48px;
+  animation: fadeUp .6s cubic-bezier(.16,1,.3,1) .4s both;
 }
-.btn-primary:hover{background:var(--accent-dim);transform:translateY(-2px)}
-.btn-outline{
-  background:transparent;color:var(--white);
-  padding:15px 32px;border-radius:2px;
-  font-size:13px;font-weight:600;
-  letter-spacing:.08em;text-transform:uppercase;
-  cursor:pointer;
-  border:1px solid var(--border);
-  display:inline-flex;align-items:center;gap:10px;
-  transition:border-color .2s,background .2s;
-  backdrop-filter: blur(4px);
+.norm-pill {
+  font-family: var(--mono); font-size: 11px; font-weight: 500;
+  padding: 6px 14px; border-radius: 2px;
+  border: 1px solid var(--border);
+  color: var(--white-60); letter-spacing: .08em;
+  background: var(--bg-surface);
 }
-.btn-outline:hover{border-color:var(--white-60);background:rgba(255,255,255,0.1)}
+.norm-pill.active {
+  border-color: var(--accent); color: var(--accent); background: var(--accent-glow);
+}
+
+.hero-btns {
+  display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
+  animation: fadeUp .6s cubic-bezier(.16,1,.3,1) .5s both;
+}
+.btn-primary {
+  background: var(--accent); color: var(--white);
+  padding: 16px 36px; border-radius: 2px;
+  font-size: 13px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
+  cursor: pointer; border: 1px solid var(--accent);
+  display: inline-flex; align-items: center; gap: 10px;
+  transition: background .2s, transform .15s;
+}
+.btn-primary:hover { background: var(--accent-dim); transform: translateY(-2px); }
+.btn-outline {
+  background: transparent; color: var(--white);
+  padding: 15px 32px; border-radius: 2px;
+  font-size: 13px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  display: inline-flex; align-items: center; gap: 10px;
+  transition: border-color .2s, background .2s;
+}
+.btn-outline:hover { border-color: var(--white-60); background: rgba(255,255,255,0.05); }
+
+/* Right Image Area */
+.hero-right {
+  flex: 1.1; /* Dá um pouco mais de espaço visual para a foto na tela cheia */
+  position: relative;
+  background: url('https://i.postimg.cc/0Nmv2k9t/240_F_548514841_w_Sm_TGRYvn_Bvn_Br_ESz_Fof_Eq_WFm_INecz_SW.webp') center/cover no-repeat;
+}
+/* Gradiente lateral para suavizar a divisão entre o texto e a imagem */
+.hero-right::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; bottom: 0; width: 120px;
+  background: linear-gradient(to right, var(--bg) 0%, transparent 100%);
+}
+
+@media(max-width: 900px) {
+  .hero { flex-direction: column; min-height: auto; }
+  .hero-left { padding: 120px 24px 60px; flex: none; width: 100%; }
+  .hero-right { width: 100%; height: 400px; flex: none; }
+  .hero-right::before {
+    width: 100%; height: 80px; left: 0; right: 0; top: 0; bottom: auto;
+    background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+  }
+}
 
 /* ═══════════════════════════════════════════
    LOGOS STRIP
@@ -373,7 +406,6 @@ nav.scrolled{
   display:flex;align-items:center;justify-content:center;
   position:relative;overflow:hidden;
 }
-/* Structural Image Placeholders */
 .img-placeholder{
   background-image: 
     linear-gradient(45deg, var(--bg-card) 25%, transparent 25%), 
@@ -689,9 +721,8 @@ footer{
 </nav>
 
 <section class="hero" id="home">
-  <div class="hero-grid"></div>
-
-  <div class="container" style="position:relative;z-index:10;width:100%">
+  <div class="hero-left">
+    <div class="hero-grid"></div>
     <div class="hero-content">
       <div class="hero-eyebrow">
         Engenharia Térmica Industrial · 12 Anos de Mercado
@@ -726,6 +757,8 @@ footer{
       </div>
     </div>
   </div>
+  
+  <div class="hero-right"></div>
 </section>
 
 <div class="logos">
