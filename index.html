@@ -146,7 +146,9 @@ nav.scrolled{
   position:relative;min-height:100vh;
   display:flex;align-items:center;
   overflow:hidden;
-  background:var(--bg);
+  /* Overlay dinâmico para garantir legibilidade e imagem no fundo */
+  background: linear-gradient(to right, rgba(13, 17, 21, 0.95) 0%, rgba(13, 17, 21, 0.7) 40%, rgba(13, 17, 21, 0.2) 100%),
+              url('https://i.postimg.cc/0Nmv2k9t/240_F_548514841_w_Sm_TGRYvn_Bvn_Br_ESz_Fof_Eq_WFm_INecz_SW.webp') center/cover no-repeat;
   padding-top:80px;
 }
 /* Clean Structural Grid */
@@ -158,7 +160,7 @@ nav.scrolled{
   background-size:120px 120px;
   background-position: center center;
   pointer-events:none;
-  opacity:0.5;
+  opacity:0.6;
 }
 /* Sharp diagonal accent */
 .hero::before{
@@ -209,7 +211,8 @@ nav.scrolled{
   padding:6px 14px;border-radius:2px;
   border:1px solid var(--border);
   color:var(--white-60);letter-spacing:.08em;
-  background:var(--bg-surface);
+  background:rgba(26, 32, 39, 0.6); /* Transparência para ver a imagem de fundo */
+  backdrop-filter: blur(4px);
 }
 .norm-pill.active{border-color:var(--accent);color:var(--accent);background:var(--accent-glow)}
 
@@ -236,8 +239,9 @@ nav.scrolled{
   border:1px solid var(--border);
   display:inline-flex;align-items:center;gap:10px;
   transition:border-color .2s,background .2s;
+  backdrop-filter: blur(4px);
 }
-.btn-outline:hover{border-color:var(--white-60);background:var(--white-10)}
+.btn-outline:hover{border-color:var(--white-60);background:rgba(255,255,255,0.1)}
 
 /* ═══════════════════════════════════════════
    LOGOS STRIP
