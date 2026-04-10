@@ -150,23 +150,24 @@ nav.scrolled{
   background: var(--bg);
 }
 
-/* Left Content Area */
+/* Left Content Area (30%) */
 .hero-left {
-  flex: 1;
+  flex: 0.3; /* Divisão ajustada conforme solicitação */
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* Alinhamento inteligente para manter a grade igual ao .container */
-  padding: 120px 48px 80px calc(50vw - 620px + 32px);
+  /* Espaçamento interno ajustado */
+  padding: 120px 45px 80px calc(50vw - 620px + 32px); 
   background: var(--bg);
   z-index: 10;
 }
 /* Responsive padding fix for smaller screens */
 @media(max-width: 1300px) {
-  .hero-left { padding-left: 32px; }
+  .hero-left { padding-left: 45px; }
 }
 
+/* Grid Opacity Adjusted to 77% */
 .hero-grid {
   position: absolute; inset: 0;
   background-image:
@@ -174,13 +175,14 @@ nav.scrolled{
     linear-gradient(90deg, var(--border-sub) 1px, transparent 1px);
   background-size: 80px 80px;
   pointer-events: none;
-  opacity: 0.6;
+  opacity: 0.77; 
 }
 
 .hero-content {
   position: relative;
   z-index: 10;
-  max-width: 600px;
+  /* Permitir que o texto ocupe mais espaço na coluna estreita */
+  max-width: 100%; 
 }
 
 .hero-eyebrow {
@@ -194,7 +196,8 @@ nav.scrolled{
 }
 
 .hero-h1 {
-  font-size: clamp(36px, 5vw, 64px);
+  /* Tamanho de fonte ligeiramente menor para caber em 30% da tela */
+  font-size: clamp(32px, 4vw, 56px); 
   font-weight: 700; line-height: 1.1;
   letter-spacing: -.03em;
   color: var(--white);
@@ -204,7 +207,7 @@ nav.scrolled{
 .hero-h1 span { color: var(--accent); }
 
 .hero-sub {
-  font-size: clamp(16px, 1.8vw, 18px);
+  font-size: clamp(14px, 1.5vw, 16px);
   font-weight: 300; color: var(--white-80);
   line-height: 1.65; margin-bottom: 40px;
   animation: fadeUp .6s cubic-bezier(.16,1,.3,1) .3s both;
@@ -252,28 +255,19 @@ nav.scrolled{
 }
 .btn-outline:hover { border-color: var(--white-60); background: rgba(255,255,255,0.05); }
 
-/* Right Image Area */
+/* Right Image Area (70%) - Overlay Zero */
 .hero-right {
-  flex: 1.1; /* Dá um pouco mais de espaço visual para a foto na tela cheia */
+  flex: 0.7; 
   position: relative;
   background: url('https://i.postimg.cc/0Nmv2k9t/240_F_548514841_w_Sm_TGRYvn_Bvn_Br_ESz_Fof_Eq_WFm_INecz_SW.webp') center/cover no-repeat;
 }
-/* Gradiente lateral para suavizar a divisão entre o texto e a imagem */
-.hero-right::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; bottom: 0; width: 120px;
-  background: linear-gradient(to right, var(--bg) 0%, transparent 100%);
-}
+/* Gradiente lateral sutil removido para manter a imagem o mais limpa possível 
+   conforme "Overlay 0" */
 
 @media(max-width: 900px) {
   .hero { flex-direction: column; min-height: auto; }
   .hero-left { padding: 120px 24px 60px; flex: none; width: 100%; }
   .hero-right { width: 100%; height: 400px; flex: none; }
-  .hero-right::before {
-    width: 100%; height: 80px; left: 0; right: 0; top: 0; bottom: auto;
-    background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
-  }
 }
 
 /* ═══════════════════════════════════════════
