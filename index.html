@@ -1,1078 +1,2167 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>DV Engenharia Térmica — Projetos de Alta Performance</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
+
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <style>
+
 /* ═══════════════════════════════════════════
+
    TOKENS & RESET (INDUSTRIAL SLATE & ORANGE)
+
 ═══════════════════════════════════════════ */
+
 :root {
+
   --bg:          #0D1115; /* Slate Dark */
+
   --bg-card:     #13181D; /* Slate Mid */
+
   --bg-surface:  #1A2027; /* Slate Light */
+
   --accent:      #E65A19; /* Industrial Orange */
+
   --accent-dim:  #B34512;
+
   --accent-glow: rgba(230, 90, 25, 0.15);
+
   --white:       #F8FAFC;
+
   --white-80:    rgba(248, 250, 252, 0.8);
+
   --white-60:    rgba(248, 250, 252, 0.6);
+
   --white-30:    rgba(248, 250, 252, 0.3);
+
   --white-10:    rgba(248, 250, 252, 0.08);
+
   --border:      rgba(255, 255, 255, 0.12);
+
   --border-sub:  rgba(255, 255, 255, 0.06);
+
   --mono:        'IBM Plex Mono', monospace;
+
   --sans:        'Sora', sans-serif;
+
 }
+
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
 html{scroll-behavior:smooth;font-size:16px}
+
 body{
+
   font-family:var(--sans);
+
   background:var(--bg);
+
   color:var(--white);
+
   overflow-x:hidden;
+
   -webkit-font-smoothing:antialiased;
+
 }
+
 img{display:block;max-width:100%}
+
 a{text-decoration:none;color:inherit}
 
+
+
 /* ═══════════════════════════════════════════
+
    SCROLLBAR
+
 ═══════════════════════════════════════════ */
+
 ::-webkit-scrollbar{width:6px}
+
 ::-webkit-scrollbar-track{background:var(--bg)}
+
 ::-webkit-scrollbar-thumb{background:var(--bg-surface);border-radius:0px}
+
 ::-webkit-scrollbar-thumb:hover{background:var(--accent-dim)}
 
+
+
 /* ═══════════════════════════════════════════
+
    UTILITIES & ANIMATIONS
+
 ═══════════════════════════════════════════ */
+
 .mono{font-family:var(--mono)}
+
 .accent{color:var(--accent)}
+
 .container{max-width:1240px;margin:0 auto;padding:0 32px}
+
 @media(max-width:640px){.container{padding:0 20px}}
 
+
+
 @keyframes fadeUp{
+
   from{opacity:0;transform:translateY(24px)}
+
   to{opacity:1;transform:translateY(0)}
+
 }
+
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
+
+
 .anim{opacity:0}
+
 .anim.visible{animation:fadeUp .6s cubic-bezier(.16,1,.3,1) forwards}
+
 .d1{animation-delay:.1s}
+
 .d2{animation-delay:.2s}
+
 .d3{animation-delay:.3s}
+
 .d4{animation-delay:.4s}
 
+
+
 /* ═══════════════════════════════════════════
+
    NAV
+
 ═══════════════════════════════════════════ */
+
 nav{
+
   position:fixed;top:0;left:0;right:0;z-index:100;
+
   padding:20px 32px;
+
   display:flex;align-items:center;justify-content:space-between;
+
   transition:background .4s,backdrop-filter .4s,border-color .4s;
+
   border-bottom:1px solid transparent;
+
 }
+
 nav.scrolled{
+
   background:rgba(13,17,21,.95);
+
   backdrop-filter:blur(12px);
+
   border-color:var(--border-sub);
+
 }
+
 .nav-logo{
+
   display:flex;align-items:center;gap:12px;
+
 }
+
 .nav-logomark{
+
   width:28px;height:28px;
+
   background:var(--accent);
+
   display:flex;align-items:center;justify-content:center;
+
   border-radius:2px;
+
 }
+
 .nav-logomark svg{width:16px;height:16px;fill:var(--bg)}
+
 .nav-brand{font-size:15px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--white)}
+
 .nav-brand span{color:var(--white-60);font-weight:400}
+
 .nav-links{
+
   display:flex;gap:36px;list-style:none;align-items:center;
+
 }
+
 .nav-links a{
+
   font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+
   color:var(--white-60);transition:color .2s;font-weight:500;
+
 }
+
 .nav-links a:hover{color:var(--white)}
+
 .nav-cta{
+
   background:var(--white);color:var(--bg);
+
   padding:10px 24px;border-radius:2px;
+
   font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+
   font-weight:700;cursor:pointer;border:none;
+
   transition:background .2s,color .2s;
+
 }
+
 .nav-cta:hover{background:var(--accent);color:var(--white)}
+
 .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+
 .nav-hamburger span{width:24px;height:2px;background:var(--white);display:block;transition:.3s}
+
 .mobile-menu{
+
   display:none;
+
   position:fixed;inset:0;z-index:99;
+
   background:var(--bg);
+
   flex-direction:column;align-items:center;justify-content:center;gap:32px;
+
   padding:40px;
+
 }
+
 .mobile-menu.open{display:flex}
+
 .mobile-menu a{font-size:18px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--white-60)}
+
 .mobile-menu a:hover{color:var(--accent)}
+
 .mobile-menu-cta{
+
   background:var(--accent);color:var(--white);
+
   padding:14px 40px;border-radius:2px;
+
   font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+
   cursor:pointer;border:none;margin-top:8px;
+
 }
+
 .mobile-close{
+
   position:absolute;top:24px;right:28px;
+
   background:none;border:none;color:var(--white-60);font-size:28px;cursor:pointer;
+
 }
+
 @media(max-width:900px){
+
   .nav-links, .nav-cta{display:none}
+
   .nav-hamburger{display:flex}
+
 }
+
+
 
 /* ═══════════════════════════════════════════
+
    HERO (SPLIT SCREEN LAYOUT)
+
 ═══════════════════════════════════════════ */
+
 .hero {
+
   position: relative;
+
   min-height: 100vh;
+
   display: flex;
+
   align-items: stretch;
+
   background: var(--bg);
+
 }
 
-/* Left Content Area (30%) */
+
+
+/* Left Content Area */
+
 .hero-left {
-  flex: 0.3; /* Divisão ajustada conforme solicitação */
+
+  flex: 1;
+
   position: relative;
+
   display: flex;
+
   flex-direction: column;
+
   justify-content: center;
-  /* Espaçamento interno ajustado */
-  padding: 120px 45px 80px calc(50vw - 620px + 32px); 
+
+  /* Alinhamento inteligente para manter a grade igual ao .container */
+
+  padding: 120px 48px 80px calc(50vw - 620px + 32px);
+
   background: var(--bg);
+
   z-index: 10;
-}
-/* Responsive padding fix for smaller screens */
-@media(max-width: 1300px) {
-  .hero-left { padding-left: 45px; }
+
 }
 
-/* Grid Opacity Adjusted to 77% */
-.hero-grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(var(--border-sub) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border-sub) 1px, transparent 1px);
-  background-size: 80px 80px;
-  pointer-events: none;
-  opacity: 0.77; 
+/* Responsive padding fix for smaller screens */
+
+@media(max-width: 1300px) {
+
+  .hero-left { padding-left: 32px; }
+
 }
+
+
+
+.hero-grid {
+
+  position: absolute; inset: 0;
+
+  background-image:
+
+    linear-gradient(var(--border-sub) 1px, transparent 1px),
+
+    linear-gradient(90deg, var(--border-sub) 1px, transparent 1px);
+
+  background-size: 80px 80px;
+
+  pointer-events: none;
+
+  opacity: 0.6;
+
+}
+
+
 
 .hero-content {
+
   position: relative;
+
   z-index: 10;
-  /* Permitir que o texto ocupe mais espaço na coluna estreita */
-  max-width: 100%; 
+
+  max-width: 600px;
+
 }
+
+
 
 .hero-eyebrow {
+
   display: inline-flex; align-items: center; gap: 12px;
+
   margin-bottom: 28px;
+
   font-family: var(--mono); font-size: 11px;
+
   color: var(--white-60); letter-spacing: .15em; text-transform: uppercase;
+
   padding-left: 16px;
+
   border-left: 2px solid var(--accent);
+
   animation: fadeUp .6s cubic-bezier(.16,1,.3,1) .1s both;
+
 }
+
+
 
 .hero-h1 {
-  /* Tamanho de fonte ligeiramente menor para caber em 30% da tela */
-  font-size: clamp(32px, 4vw, 56px); 
+
+  font-size: clamp(36px, 5vw, 64px);
+
   font-weight: 700; line-height: 1.1;
+
   letter-spacing: -.03em;
+
   color: var(--white);
+
   margin-bottom: 20px;
+
   animation: fadeUp .6s cubic-bezier(.16,1,.3,1) .2s both;
+
 }
+
 .hero-h1 span { color: var(--accent); }
 
+
+
 .hero-sub {
-  font-size: clamp(14px, 1.5vw, 16px);
+
+  font-size: clamp(16px, 1.8vw, 18px);
+
   font-weight: 300; color: var(--white-80);
+
   line-height: 1.65; margin-bottom: 40px;
+
   animation: fadeUp .6s cubic-bezier(.16,1,.3,1) .3s both;
+
 }
+
+
 
 .hero-norms {
+
   display: flex; flex-wrap: wrap; gap: 8px;
+
   margin-bottom: 48px;
+
   animation: fadeUp .6s cubic-bezier(.16,1,.3,1) .4s both;
+
 }
+
 .norm-pill {
+
   font-family: var(--mono); font-size: 11px; font-weight: 500;
+
   padding: 6px 14px; border-radius: 2px;
+
   border: 1px solid var(--border);
+
   color: var(--white-60); letter-spacing: .08em;
+
   background: var(--bg-surface);
+
 }
+
 .norm-pill.active {
+
   border-color: var(--accent); color: var(--accent); background: var(--accent-glow);
+
 }
+
+
 
 .hero-btns {
+
   display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
+
   animation: fadeUp .6s cubic-bezier(.16,1,.3,1) .5s both;
+
 }
+
 .btn-primary {
+
   background: var(--accent); color: var(--white);
+
   padding: 16px 36px; border-radius: 2px;
+
   font-size: 13px; font-weight: 600;
+
   letter-spacing: .08em; text-transform: uppercase;
+
   cursor: pointer; border: 1px solid var(--accent);
+
   display: inline-flex; align-items: center; gap: 10px;
+
   transition: background .2s, transform .15s;
+
 }
+
 .btn-primary:hover { background: var(--accent-dim); transform: translateY(-2px); }
+
 .btn-outline {
+
   background: transparent; color: var(--white);
+
   padding: 15px 32px; border-radius: 2px;
+
   font-size: 13px; font-weight: 600;
+
   letter-spacing: .08em; text-transform: uppercase;
+
   cursor: pointer;
+
   border: 1px solid var(--border);
+
   display: inline-flex; align-items: center; gap: 10px;
+
   transition: border-color .2s, background .2s;
+
 }
+
 .btn-outline:hover { border-color: var(--white-60); background: rgba(255,255,255,0.05); }
 
-/* Right Image Area (70%) - Overlay Zero */
+
+
+/* Right Image Area */
+
 .hero-right {
-  flex: 0.7; 
+
+  flex: 1.1; /* Dá um pouco mais de espaço visual para a foto na tela cheia */
+
   position: relative;
+
   background: url('https://i.postimg.cc/0Nmv2k9t/240_F_548514841_w_Sm_TGRYvn_Bvn_Br_ESz_Fof_Eq_WFm_INecz_SW.webp') center/cover no-repeat;
+
 }
-/* Gradiente lateral sutil removido para manter a imagem o mais limpa possível 
-   conforme "Overlay 0" */
+
+/* Gradiente lateral para suavizar a divisão entre o texto e a imagem */
+
+.hero-right::before {
+
+  content: '';
+
+  position: absolute;
+
+  top: 0; left: 0; bottom: 0; width: 120px;
+
+  background: linear-gradient(to right, var(--bg) 0%, transparent 100%);
+
+}
+
+
 
 @media(max-width: 900px) {
+
   .hero { flex-direction: column; min-height: auto; }
+
   .hero-left { padding: 120px 24px 60px; flex: none; width: 100%; }
+
   .hero-right { width: 100%; height: 400px; flex: none; }
+
+  .hero-right::before {
+
+    width: 100%; height: 80px; left: 0; right: 0; top: 0; bottom: auto;
+
+    background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+
+  }
+
 }
 
+
+
 /* ═══════════════════════════════════════════
+
    LOGOS STRIP
+
 ═══════════════════════════════════════════ */
+
 .logos{
+
   padding:40px 0;
+
   border-top:1px solid var(--border-sub);
+
   border-bottom:1px solid var(--border-sub);
+
   background:var(--bg-card);
+
 }
+
 .logos-inner{
+
   display:flex;align-items:center;gap:0;
+
   overflow:hidden;
+
 }
+
 .logos-label{
+
   font-family:var(--mono);font-size:10px;
+
   color:var(--accent);letter-spacing:.12em;text-transform:uppercase;
+
   white-space:nowrap;padding-right:48px;
+
   border-right:1px solid var(--border-sub);
+
   margin-right:48px;flex-shrink:0;font-weight:500;
+
 }
+
 .logos-list{
+
   display:flex;gap:56px;align-items:center;flex-wrap:wrap;
+
 }
+
 .logo-item{
+
   font-family:var(--mono);font-size:12px;
+
   color:var(--white-30);letter-spacing:.1em;text-transform:uppercase;
+
   font-weight:500;
+
 }
 
+
+
 /* ═══════════════════════════════════════════
+
    SECTION BASE
+
 ═══════════════════════════════════════════ */
+
 .section{padding:120px 0;position:relative}
+
 .section-tag{
+
   display:inline-flex;align-items:center;gap:12px;
+
   font-family:var(--mono);font-size:11px;font-weight:500;
+
   color:var(--accent);letter-spacing:.15em;text-transform:uppercase;
+
   margin-bottom:24px;
-}
-.section-tag::before{
-  content:'';width:24px;height:2px;background:var(--accent);
-}
-.section-h2{
-  font-size:clamp(32px,4vw,48px);
-  font-weight:700;line-height:1.1;
-  letter-spacing:-.02em;
-  color:var(--white);margin-bottom:20px;
-}
-.section-h2 em{font-style:normal;color:var(--white-60);font-weight:300}
-.section-lead{
-  font-size:clamp(16px,1.5vw,18px);
-  color:var(--white-60);line-height:1.7;
-  max-width:560px;font-weight:400;
+
 }
 
+.section-tag::before{
+
+  content:'';width:24px;height:2px;background:var(--accent);
+
+}
+
+.section-h2{
+
+  font-size:clamp(32px,4vw,48px);
+
+  font-weight:700;line-height:1.1;
+
+  letter-spacing:-.02em;
+
+  color:var(--white);margin-bottom:20px;
+
+}
+
+.section-h2 em{font-style:normal;color:var(--white-60);font-weight:300}
+
+.section-lead{
+
+  font-size:clamp(16px,1.5vw,18px);
+
+  color:var(--white-60);line-height:1.7;
+
+  max-width:560px;font-weight:400;
+
+}
+
+
+
 /* ═══════════════════════════════════════════
+
    SERVICES SECTION
+
 ═══════════════════════════════════════════ */
+
 .services-bg{background:var(--bg)}
 
+
+
 .services-header{
+
   display:flex;justify-content:space-between;align-items:flex-end;
+
   margin-bottom:72px;flex-wrap:wrap;gap:32px;
+
 }
+
 .services-grid{
+
   display:grid;
+
   grid-template-columns:repeat(3,1fr);
+
   gap:24px;
+
 }
+
 .service-card{
+
   background:var(--bg-card);
+
   border:1px solid var(--border-sub);
+
   padding:48px 40px;border-radius:4px;
+
   transition:border-color .3s, transform .3s;
+
   position:relative;
+
 }
+
 .service-card::before{
+
   content:'';
+
   position:absolute;top:0;left:0;width:0;height:2px;
+
   background:var(--accent);
+
   transition:width .3s ease;
+
 }
+
 .service-card:hover{border-color:var(--border);transform:translateY(-4px)}
+
 .service-card:hover::before{width:100%}
+
 .service-num{
+
   font-family:var(--mono);font-size:12px;font-weight:500;
+
   color:var(--accent);letter-spacing:.1em;
+
   margin-bottom:20px;display:block;
+
 }
+
 .service-name{
+
   font-size:20px;font-weight:600;color:var(--white);
+
   margin-bottom:16px;line-height:1.3;
+
 }
+
 .service-desc{
+
   font-size:14px;color:var(--white-60);
+
   line-height:1.7;margin-bottom:32px;
+
 }
+
 .service-tags{display:flex;flex-wrap:wrap;gap:8px}
+
 .service-tag{
+
   font-family:var(--mono);font-size:10px;
+
   padding:4px 10px;border-radius:2px;
+
   background:var(--bg-surface);color:var(--white-60);
+
   letter-spacing:.08em;
+
 }
+
 @media(max-width:900px){.services-grid{grid-template-columns:1fr 1fr}}
+
 @media(max-width:600px){.services-grid{grid-template-columns:1fr}}
 
+
+
 /* ═══════════════════════════════════════════
+
    PROJETOS GALLERY
+
 ═══════════════════════════════════════════ */
+
 .projetos-bg{background:var(--bg-card)}
+
 .projects-header{
+
   display:flex;justify-content:space-between;align-items:flex-end;
+
   margin-bottom:64px;flex-wrap:wrap;gap:24px;
+
 }
+
 .projects-grid{
+
   display:grid;grid-template-columns:1fr 1fr;gap:24px;
+
 }
+
 .project-card{
+
   border:1px solid var(--border-sub);border-radius:4px;
+
   background:var(--bg);overflow:hidden;
+
   transition:border-color .3s;cursor:pointer;
+
 }
+
 .project-card:hover{border-color:var(--border)}
+
 .project-img{
+
   width:100%;aspect-ratio:16/9;
+
   background:var(--bg-surface);
+
   display:flex;align-items:center;justify-content:center;
+
   position:relative;overflow:hidden;
+
 }
+
 .img-placeholder{
+
   background-image: 
+
     linear-gradient(45deg, var(--bg-card) 25%, transparent 25%), 
+
     linear-gradient(-45deg, var(--bg-card) 25%, transparent 25%), 
+
     linear-gradient(45deg, transparent 75%, var(--bg-card) 75%), 
+
     linear-gradient(-45deg, transparent 75%, var(--bg-card) 75%);
+
   background-size: 20px 20px;
+
   background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+
   opacity: 0.3;
+
 }
+
 .img-label-overlay{
+
   position:absolute;bottom:20px;left:24px;
+
   font-family:var(--mono);font-size:11px;font-weight:500;
+
   color:var(--white);letter-spacing:.1em;text-transform:uppercase;
+
   background:rgba(13,17,21,.9);padding:6px 12px;border-left:2px solid var(--accent);
+
 }
+
 .project-body{padding:32px}
+
 .project-sector{
+
   font-family:var(--mono);font-size:10px;
+
   color:var(--accent);letter-spacing:.12em;text-transform:uppercase;
+
   margin-bottom:12px;font-weight:500;
+
 }
+
 .project-title{
+
   font-size:18px;font-weight:600;color:var(--white);
+
   line-height:1.4;margin-bottom:12px;
+
 }
+
 .project-sub{
+
   font-size:14px;color:var(--white-60);
+
   line-height:1.6;margin-bottom:24px;
+
 }
+
 .project-norms{display:flex;gap:8px;flex-wrap:wrap}
+
 .project-norm{
+
   font-family:var(--mono);font-size:10px;
+
   padding:4px 8px;border:1px solid var(--border-sub);
+
   color:var(--white-60);border-radius:2px;
+
 }
+
 @media(max-width:768px){.projects-grid{grid-template-columns:1fr}}
 
+
+
 /* ═══════════════════════════════════════════
+
    PROCESSO
+
 ═══════════════════════════════════════════ */
+
 .processo-steps{
+
   display:grid;grid-template-columns:repeat(4,1fr);
+
   gap:24px;margin-top:72px;
+
 }
+
 .pstep{
+
   padding:32px 0;border-top:1px solid var(--border-sub);
+
   position:relative;
+
 }
+
 .pstep-num{
+
   font-family:var(--mono);font-size:14px;
+
   font-weight:600;color:var(--accent);
+
   margin-bottom:24px;display:inline-block;
+
   padding:4px 10px;background:var(--accent-glow);border-radius:2px;
+
 }
+
 .pstep-name{
+
   font-size:16px;font-weight:600;color:var(--white);
+
   margin-bottom:12px;
+
 }
+
 .pstep-desc{font-size:14px;color:var(--white-60);line-height:1.7}
+
 @media(max-width:900px){.processo-steps{grid-template-columns:1fr 1fr}}
+
 @media(max-width:500px){.processo-steps{grid-template-columns:1fr}}
 
+
+
 /* ═══════════════════════════════════════════
+
    TECH STACK
+
 ═══════════════════════════════════════════ */
+
 .tech-section{background:var(--bg-card)}
+
 .tech-layout{
+
   display:grid;grid-template-columns:1fr 1fr;
+
   gap:80px;align-items:center;
+
 }
+
 .tech-box{
+
   background:var(--bg);
+
   border:1px solid var(--border-sub);
+
   border-radius:4px;padding:48px;
+
 }
+
 .tech-box-header{
+
   font-family:var(--mono);font-size:11px;font-weight:500;
+
   color:var(--accent);letter-spacing:.15em;text-transform:uppercase;
+
   margin-bottom:40px;padding-bottom:16px;
+
   border-bottom:1px solid var(--border-sub);
+
 }
+
 .tech-row{
+
   display:flex;align-items:center;gap:24px;
+
   padding:16px 0;border-bottom:1px solid var(--border-sub);
+
 }
+
 .tech-row:last-child{border-bottom:none;padding-bottom:0}
+
 .tech-name{
+
   font-family:var(--mono);font-size:14px;
+
   font-weight:600;color:var(--white);
+
   min-width:100px;
+
 }
+
 .tech-detail{font-size:13px;color:var(--white-60);flex:1;line-height:1.5}
+
 .tech-check{color:var(--accent);font-size:16px}
+
 @media(max-width:900px){.tech-layout{grid-template-columns:1fr;gap:48px}}
 
+
+
 /* ═══════════════════════════════════════════
+
    ENGINEER CTA STRIP
+
 ═══════════════════════════════════════════ */
+
 .eng-strip{
+
   background:var(--accent);
+
   padding:64px 0;
+
 }
+
 .eng-inner{
+
   display:flex;align-items:center;justify-content:space-between;
+
   gap:40px;flex-wrap:wrap;
+
 }
+
 .eng-eyebrow{
+
   font-family:var(--mono);font-size:11px;font-weight:600;
+
   color:var(--bg);letter-spacing:.15em;text-transform:uppercase;
+
   margin-bottom:12px;
+
 }
+
 .eng-title{
+
   font-size:clamp(24px,2.5vw,36px);
+
   font-weight:700;color:var(--white);
+
   line-height:1.2;margin-bottom:12px;
+
 }
+
 .eng-sub{font-size:15px;color:rgba(255,255,255,0.9);max-width:500px;line-height:1.6}
+
 .eng-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+
 .btn-dark{
+
   background:var(--bg);color:var(--white);
+
   padding:16px 32px;border-radius:2px;
+
   font-size:13px;font-weight:700;
+
   letter-spacing:.08em;text-transform:uppercase;
+
   cursor:pointer;border:none;
+
   display:inline-flex;align-items:center;gap:10px;
+
   transition:background .2s;
+
 }
+
 .btn-dark:hover{background:var(--bg-card)}
+
 .btn-outline-light{
+
   background:transparent;color:var(--white);
+
   padding:15px 28px;border-radius:2px;
+
   font-size:13px;font-weight:600;
+
   letter-spacing:.08em;text-transform:uppercase;
+
   cursor:pointer;border:1px solid rgba(255,255,255,0.3);
+
   display:inline-flex;align-items:center;gap:10px;
+
   transition:background .2s;
+
 }
+
 .btn-outline-light:hover{background:rgba(255,255,255,0.1)}
 
+
+
 /* ═══════════════════════════════════════════
+
    FORMULÁRIO CONTATO
+
 ═══════════════════════════════════════════ */
+
 .contact-layout{
+
   display:grid;grid-template-columns:1fr 1.2fr;
+
   gap:80px;align-items:start;
+
 }
+
 .contact-detail{
+
   display:flex;align-items:flex-start;gap:20px;
+
   padding:24px 0;border-bottom:1px solid var(--border-sub);
+
 }
+
 .contact-detail:first-of-type{padding-top:0}
+
 .contact-detail-icon{
+
   width:48px;height:48px;border-radius:2px;
+
   background:var(--bg-card);border:1px solid var(--border-sub);
+
   display:flex;align-items:center;justify-content:center;
+
   font-size:18px;flex-shrink:0;color:var(--accent);
+
 }
+
 .contact-detail-label{
+
   font-family:var(--mono);font-size:10px;font-weight:500;
+
   color:var(--white-60);letter-spacing:.1em;text-transform:uppercase;
+
   margin-bottom:6px;
+
 }
+
 .contact-detail-value{font-size:16px;color:var(--white);font-weight:600;margin-bottom:4px}
+
 .contact-detail-sub{font-size:13px;color:var(--white-30)}
 
+
+
 /* Form */
+
 .form-card{
+
   background:var(--bg-card);border:1px solid var(--border-sub);
+
   border-radius:4px;padding:48px;
+
 }
+
 .form-title{
+
   font-size:24px;font-weight:700;color:var(--white);margin-bottom:8px;
+
 }
+
 .form-sub{font-size:14px;color:var(--white-60);margin-bottom:40px;line-height:1.6}
+
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+
 .form-group{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+
 .form-label{
+
   font-family:var(--mono);font-size:11px;font-weight:500;
+
   color:var(--white-60);letter-spacing:.08em;text-transform:uppercase;
+
 }
+
 .form-input,.form-select,.form-textarea{
+
   background:var(--bg-surface);
+
   border:1px solid var(--border-sub);
+
   border-radius:2px;padding:14px 16px;
+
   font-size:14px;color:var(--white);font-family:var(--sans);
+
   outline:none;transition:border-color .2s;width:100%;
+
 }
+
 .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);}
+
 .form-textarea{resize:vertical;min-height:120px;line-height:1.6}
+
 .form-submit{
+
   width:100%;background:var(--accent);color:var(--white);
+
   padding:16px;border-radius:2px;
+
   font-size:14px;font-weight:700;
+
   letter-spacing:.08em;text-transform:uppercase;
+
   cursor:pointer;border:none;margin-top:16px;
+
   display:flex;align-items:center;justify-content:center;gap:10px;
+
   transition:background .2s;
+
 }
+
 .form-submit:hover{background:var(--accent-dim)}
+
 @media(max-width:900px){
+
   .contact-layout{grid-template-columns:1fr;gap:56px}
+
   .form-row{grid-template-columns:1fr}
+
 }
+
 @media(max-width:500px){.form-card{padding:32px 24px}}
 
+
+
 /* ═══════════════════════════════════════════
+
    FOOTER
+
 ═══════════════════════════════════════════ */
+
 footer{
+
   background:#090C0F;
+
   padding:80px 0 40px;
+
   border-top:1px solid var(--border-sub);
+
 }
+
 .footer-top{
+
   display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
+
   gap:48px;padding-bottom:56px;
+
   border-bottom:1px solid var(--border-sub);
+
   margin-bottom:32px;
+
 }
+
 .footer-brand-name{
+
   font-size:16px;font-weight:700;color:var(--white);
+
   letter-spacing:.04em;margin-bottom:6px;text-transform:uppercase;
+
 }
+
 .footer-brand-sub{
+
   font-family:var(--mono);font-size:11px;
+
   color:var(--accent);letter-spacing:.1em;text-transform:uppercase;
+
   margin-bottom:16px;font-weight:500;
+
 }
+
 .footer-brand-desc{
+
   font-size:14px;color:var(--white-30);line-height:1.7;
+
   max-width:320px;margin-bottom:24px;
+
 }
+
 .footer-col-title{
+
   font-family:var(--mono);font-size:11px;font-weight:500;
+
   color:var(--white);letter-spacing:.1em;text-transform:uppercase;
+
   margin-bottom:24px;
+
 }
+
 .footer-col a{
+
   display:block;font-size:13px;color:var(--white-60);
+
   margin-bottom:14px;transition:color .2s;
+
 }
+
 .footer-col a:hover{color:var(--accent)}
+
 .footer-bottom{
+
   display:flex;justify-content:space-between;align-items:center;
+
   flex-wrap:wrap;gap:16px;
+
 }
+
 .footer-copy{
+
   font-family:var(--mono);font-size:11px;color:var(--white-30);
+
   letter-spacing:.04em;
+
 }
+
 .footer-badge{
+
   font-family:var(--mono);font-size:11px;font-weight:500;
+
   color:var(--white-60);letter-spacing:.1em;text-transform:uppercase;
+
 }
+
 @media(max-width:900px){.footer-top{grid-template-columns:1fr 1fr;gap:40px}}
+
 @media(max-width:580px){.footer-top{grid-template-columns:1fr}}
 
+
+
 /* ═══════════════════════════════════════════
+
    WHATSAPP FLOATING
+
 ═══════════════════════════════════════════ */
+
 .wpp-float{
+
   position:fixed;bottom:32px;right:32px;z-index:200;
+
   width:56px;height:56px;border-radius:50%;
+
   background:#25D366;
+
   display:flex;align-items:center;justify-content:center;
+
   cursor:pointer;
+
   box-shadow:0 8px 24px rgba(0,0,0,0.4);
+
   transition:transform .2s;
+
 }
+
 .wpp-float:hover{transform:scale(1.05);}
+
 .wpp-float svg{width:28px;height:28px;fill:white}
+
 </style>
+
 </head>
+
 <body>
 
+
+
 <a href="https://wa.me/55" class="wpp-float" target="_blank" rel="noopener" title="WhatsApp">
+
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+
   </svg>
+
 </a>
 
+
+
 <div class="mobile-menu" id="mobileMenu">
+
   <button class="mobile-close" onclick="closeMobile()">✕</button>
+
   <a href="#servicos" onclick="closeMobile()">Serviços</a>
+
   <a href="#projetos" onclick="closeMobile()">Projetos</a>
+
   <a href="#processo" onclick="closeMobile()">Processo</a>
+
   <a href="#tecnologia" onclick="closeMobile()">Tecnologia</a>
+
   <a href="#contato" onclick="closeMobile()">Contato</a>
+
   <button class="mobile-menu-cta" onclick="closeMobile()">Solicitar Análise</button>
+
 </div>
+
+
 
 <nav id="mainNav">
+
   <div class="nav-logo">
+
     <div class="nav-logomark">
+
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+
     </div>
+
     <div class="nav-brand">DV <span>Engenharia Térmica</span></div>
+
   </div>
+
   <ul class="nav-links">
+
     <li><a href="#servicos">Serviços</a></li>
+
     <li><a href="#projetos">Projetos</a></li>
+
     <li><a href="#processo">Processo</a></li>
+
     <li><a href="#tecnologia">Tecnologia</a></li>
+
     <li><a href="#contato">Contato</a></li>
+
   </ul>
+
   <button class="nav-cta" onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'})">
+
     Solicitar Análise
+
   </button>
+
   <button class="nav-hamburger" onclick="document.getElementById('mobileMenu').classList.add('open')" aria-label="Menu">
+
     <span></span><span></span><span></span>
+
   </button>
+
 </nav>
 
+
+
 <section class="hero" id="home">
+
   <div class="hero-left">
+
     <div class="hero-grid"></div>
+
     <div class="hero-content">
+
       <div class="hero-eyebrow">
+
         Engenharia Térmica Industrial · 12 Anos de Mercado
+
       </div>
+
+
 
       <h1 class="hero-h1">
+
         Projetos de<br>
+
         <span>Precisão Técnica</span>
+
       </h1>
 
+
+
       <p class="hero-sub">
+
         Trocadores de calor e vasos de pressão projetados sob medida. Cálculos rigorosos via HTRI e PVElite, entregues com prontuário ASME e NR-13 completo para fabricação.
+
       </p>
 
+
+
       <div class="hero-norms">
+
         <span class="norm-pill active">HTRI Xchanger Suite</span>
+
         <span class="norm-pill active">PVElite</span>
+
         <span class="norm-pill">ASME Sec. VIII</span>
+
         <span class="norm-pill">TEMA R/B/C</span>
+
         <span class="norm-pill">NR-13</span>
+
         <span class="norm-pill">API 660</span>
+
       </div>
+
+
 
       <div class="hero-btns">
+
         <button class="btn-primary" onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'})">
+
           Solicitar Análise Técnica
+
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
         </button>
+
         <button class="btn-outline" onclick="document.getElementById('projetos').scrollIntoView({behavior:'smooth'})">
+
           Ver Portfólio
+
         </button>
+
       </div>
+
     </div>
+
   </div>
+
   
+
   <div class="hero-right"></div>
+
 </section>
+
+
 
 <div class="logos">
+
   <div class="container">
+
     <div class="logos-inner">
+
       <div class="logos-label">Setores Atendidos</div>
+
       <div class="logos-list">
+
         <span class="logo-item">Petroquímica</span>
+
         <span class="logo-item">Óleo &amp; Gás</span>
+
         <span class="logo-item">Refinarias</span>
+
         <span class="logo-item">Geração de Energia</span>
+
         <span class="logo-item">Papel &amp; Celulose</span>
+
         <span class="logo-item">Siderurgia</span>
+
       </div>
+
     </div>
+
   </div>
+
 </div>
+
+
 
 <section class="section services-bg" id="servicos">
+
   <div class="container">
+
     <div class="services-header">
+
       <div>
+
         <div class="section-tag anim">Áreas de Atuação</div>
+
         <h2 class="section-h2 anim d1">Engenharia <em>Especializada</em><br>em Sistemas Térmicos</h2>
+
       </div>
+
       <p class="section-lead anim d2">Cada projeto entregue atende aos mais rigorosos padrões da indústria pesada, assegurando confiabilidade operacional e conformidade legal.</p>
+
     </div>
+
+
 
     <div class="services-grid">
+
       <div class="service-card anim d1">
+
         <span class="service-num">01 // Projeto Térmico</span>
+
         <div class="service-name">Trocadores de Calor</div>
+
         <div class="service-desc">Dimensionamento completo via HTRI. Seleção de geometria e materiais conforme condições de processo e exigências TEMA/ASME.</div>
+
         <div class="service-tags">
+
           <span class="service-tag">HTRI</span>
+
           <span class="service-tag">ASME VIII</span>
+
           <span class="service-tag">TEMA R/B/C</span>
+
         </div>
+
       </div>
+
+
 
       <div class="service-card anim d2">
+
         <span class="service-num">02 // Projeto Mecânico</span>
+
         <div class="service-name">Vasos de Pressão</div>
+
         <div class="service-desc">Projeto mecânico estrutural de vasos verticais e horizontais, calculados via PVElite em conformidade com ASME Sec. VIII.</div>
+
         <div class="service-tags">
+
           <span class="service-tag">PVElite</span>
+
           <span class="service-tag">ASME Div.1/2</span>
+
           <span class="service-tag">NR-13</span>
+
         </div>
+
       </div>
+
+
 
       <div class="service-card anim d3">
+
         <span class="service-num">03 // Consultoria</span>
+
         <div class="service-name">Revisão e Adequação</div>
+
         <div class="service-desc">Avaliação de equipamentos existentes, análise de falhas, emissão de laudos técnicos e planos de adequação para aumento de performance.</div>
+
         <div class="service-tags">
+
           <span class="service-tag">Laudo Técnico</span>
+
           <span class="service-tag">Análise de Falhas</span>
+
           <span class="service-tag">Retrofit</span>
+
         </div>
+
       </div>
+
     </div>
+
   </div>
+
 </section>
+
+
 
 <section class="section projetos-bg" id="projetos">
+
   <div class="container">
+
     <div class="projects-header">
+
       <div>
+
         <div class="section-tag anim">Portfólio Técnico</div>
+
         <h2 class="section-h2 anim d1">Projetos <em>Entregues</em></h2>
+
       </div>
+
     </div>
+
+
 
     <div class="projects-grid">
+
       <div class="project-card anim d1">
+
         <div class="project-img img-placeholder">
+
           <div class="img-label-overlay">Trocador Casco-Tubo</div>
+
         </div>
+
         <div class="project-body">
+
           <div class="project-sector">Petroquímica · SP</div>
+
           <div class="project-title">Resfriador de Gás em Condições Severas</div>
+
           <div class="project-sub">Projeto desenvolvido para gás com sulfeto de hidrogênio a 280°C e 45 bar. Entregue em 18 dias com prontuário ASME completo.</div>
+
           <div class="project-norms">
+
             <span class="project-norm">ASME VIII</span>
+
             <span class="project-norm">TEMA R</span>
+
             <span class="project-norm">HTRI</span>
+
           </div>
+
         </div>
+
       </div>
+
+
 
       <div class="project-card anim d2">
+
         <div class="project-img img-placeholder">
+
           <div class="img-label-overlay">Vaso de Pressão</div>
+
         </div>
+
         <div class="project-body">
+
           <div class="project-sector">Geração de Energia · MG</div>
+
           <div class="project-title">Requalificação para Nova Pressão</div>
+
           <div class="project-sub">Vaso com 15 anos reclassificado e adequado para +30% de pressão operacional. Economia expressiva contra aquisição de novo equipamento.</div>
+
           <div class="project-norms">
+
             <span class="project-norm">NR-13</span>
+
             <span class="project-norm">PVElite</span>
+
           </div>
+
         </div>
+
       </div>
+
     </div>
+
   </div>
+
 </section>
+
+
 
 <section class="section" id="processo">
+
   <div class="container">
+
     <div class="section-tag anim">Metodologia</div>
+
     <h2 class="section-h2 anim d1">Do briefing ao<br><em>prontuário final</em></h2>
 
+
+
     <div class="processo-steps anim d2">
+
       <div class="pstep">
+
         <div class="pstep-num">Fase 01</div>
+
         <div class="pstep-name">Briefing Técnico</div>
+
         <div class="pstep-desc">Levantamento estrito de dados de processo, fluidos, temperaturas e restrições de instalação do cliente.</div>
+
       </div>
+
       <div class="pstep">
+
         <div class="pstep-num">Fase 02</div>
+
         <div class="pstep-name">Simulação Termo/Mecânica</div>
+
         <div class="pstep-desc">Dimensionamento térmico (HTRI) e mecânico (PVElite). Geração de memória de cálculo detalhada.</div>
+
       </div>
+
       <div class="pstep">
+
         <div class="pstep-num">Fase 03</div>
+
         <div class="pstep-name">Revisão de Projeto</div>
+
         <div class="pstep-desc">Apresentação dos desenhos preliminares e ajustes conforme necessidades específicas da planta.</div>
+
       </div>
+
       <div class="pstep">
+
         <div class="pstep-num">Fase 04</div>
+
         <div class="pstep-name">Emissão de Prontuário</div>
+
         <div class="pstep-desc">Entrega do DataBook completo (Desenhos DWG/PDF, Cálculos, Folha de Dados) pronto para fabricação.</div>
+
       </div>
+
     </div>
+
   </div>
+
 </section>
+
+
 
 <section class="section tech-section" id="tecnologia">
+
   <div class="container">
+
     <div class="tech-layout">
+
       <div>
+
         <div class="section-tag anim">Ferramentas</div>
+
         <h2 class="section-h2 anim d1">Softwares padrão<br><em>Global</em></h2>
+
         <p class="section-lead anim d2" style="margin-bottom:36px">Utilizamos o mesmo ecossistema de software exigido pelas maiores EPCs e companhias de Óleo & Gás do mundo.</p>
+
       </div>
+
       <div class="anim d2">
+
         <div class="tech-box">
+
           <div class="tech-box-header">Licenças & Padrões Ativos</div>
+
           <div class="tech-row">
+
             <span class="tech-check">✓</span>
+
             <div class="tech-name">HTRI Suite</div>
+
             <div class="tech-detail">Simulação térmica e fluidodinâmica</div>
+
           </div>
+
           <div class="tech-row">
+
             <span class="tech-check">✓</span>
+
             <div class="tech-name">PVElite</div>
+
             <div class="tech-detail">Análise estrutural e cálculo mecânico ASME</div>
+
           </div>
+
           <div class="tech-row">
+
             <span class="tech-check">✓</span>
+
             <div class="tech-name">AutoCAD</div>
+
             <div class="tech-detail">Detalhamento para fabricação e montagem</div>
+
           </div>
+
           <div class="tech-row">
+
             <span class="tech-check">✓</span>
+
             <div class="tech-name">ASME / TEMA</div>
+
             <div class="tech-detail">Aplicação rigorosa das normas vigentes</div>
+
           </div>
+
         </div>
+
       </div>
+
     </div>
+
   </div>
+
 </section>
+
+
 
 <div class="eng-strip">
+
   <div class="container">
+
     <div class="eng-inner">
+
       <div>
+
         <div class="eng-eyebrow">Contato Direto com Engenharia</div>
+
         <div class="eng-title">Discuta seu projeto técnico</div>
+
         <div class="eng-sub">Envie suas premissas de processo. Retornamos com viabilidade técnica em 24h.</div>
+
       </div>
+
       <div class="eng-actions">
+
         <a href="https://wa.me/55" class="btn-dark" target="_blank">
+
           Falar no WhatsApp
+
         </a>
+
         <button class="btn-outline-light" onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'})">
+
           Enviar E-mail
+
         </button>
+
       </div>
+
     </div>
+
   </div>
+
 </div>
 
+
+
 <section class="section" id="contato">
+
   <div class="container">
+
     <div class="section-tag anim">Contato</div>
+
     <h2 class="section-h2 anim d1" style="margin-bottom:56px">Solicite sua<br><em>avaliação técnica</em></h2>
 
+
+
     <div class="contact-layout">
+
       <div>
+
         <div class="contact-detail anim d1">
+
           <div class="contact-detail-icon">WhatsApp</div>
+
           <div>
+
             <div class="contact-detail-label">Atendimento Técnico</div>
+
             <div class="contact-detail-value">+55 (00) 00000-0000</div>
+
           </div>
+
         </div>
+
         <div class="contact-detail anim d2">
+
           <div class="contact-detail-icon">E-mail</div>
+
           <div>
+
             <div class="contact-detail-label">Envio de Especificações</div>
+
             <div class="contact-detail-value">engenharia@dvprojetos.com.br</div>
+
           </div>
+
         </div>
+
       </div>
+
+
 
       <div class="form-card anim d2">
+
         <div class="form-title">Dados Iniciais</div>
+
         <div class="form-sub">Descreva brevemente sua necessidade estrutural ou térmica.</div>
 
+
+
         <form onsubmit="handleSubmit(event)">
+
           <div class="form-row">
+
             <div class="form-group">
+
               <label class="form-label">Nome / Empresa</label>
+
               <input class="form-input" type="text" required>
+
             </div>
+
             <div class="form-group">
+
               <label class="form-label">E-mail Corporativo</label>
+
               <input class="form-input" type="email" required>
+
             </div>
+
           </div>
+
           <div class="form-group">
+
             <label class="form-label">Tipo de Equipamento</label>
+
             <select class="form-select">
+
               <option value="">Selecione...</option>
+
               <option>Trocador Casco e Tubo</option>
+
               <option>Vaso de Pressão</option>
+
               <option>Adequação NR-13</option>
+
               <option>Outro</option>
+
             </select>
+
           </div>
+
           <div class="form-group">
+
             <label class="form-label">Descrição Técnica (Fluidos, Pressão, etc)</label>
+
             <textarea class="form-textarea"></textarea>
+
           </div>
+
           <button type="submit" class="form-submit" id="submitBtn">
+
             Enviar para Engenharia
+
           </button>
+
         </form>
+
       </div>
+
     </div>
+
   </div>
+
 </section>
 
+
+
 <footer>
+
   <div class="container">
+
     <div class="footer-top">
+
       <div>
+
         <div class="footer-brand-name">DV Engenharia Térmica</div>
+
         <div class="footer-brand-sub">Trocadores · Vasos · NR-13</div>
+
         <div class="footer-brand-desc">Escritório especializado em projetos de equipamentos estáticos de alta criticidade.</div>
+
       </div>
+
       <div class="footer-col">
+
         <div class="footer-col-title">Especialidades</div>
+
         <a href="#">Projetos Térmicos</a>
+
         <a href="#">Projetos Mecânicos</a>
+
         <a href="#">Adequações NR-13</a>
+
       </div>
+
       <div class="footer-col">
+
         <div class="footer-col-title">Indústrias</div>
+
         <a href="#">Óleo & Gás</a>
+
         <a href="#">Química</a>
+
         <a href="#">Energia</a>
+
       </div>
+
       <div class="footer-col">
+
         <div class="footer-col-title">Contato</div>
+
         <a href="#">Falar no WhatsApp</a>
+
         <a href="#">Enviar E-mail</a>
+
       </div>
+
     </div>
+
     <div class="footer-bottom">
+
       <div class="footer-copy">© 2026 DV Projetos de Alta Performance.</div>
+
       <div class="footer-badge">ASME · TEMA · HTRI · API</div>
+
     </div>
+
   </div>
+
 </footer>
 
+
+
 <script>
+
 /* Scroll Reveal & Nav */
+
 const nav = document.getElementById('mainNav');
+
 window.addEventListener('scroll', () => {
+
   nav.classList.toggle('scrolled', window.scrollY > 50);
+
 });
 
+
+
 function closeMobile(){
+
   document.getElementById('mobileMenu').classList.remove('open');
+
 }
+
+
 
 const observer = new IntersectionObserver((entries) => {
+
   entries.forEach(e => {
+
     if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); }
+
   });
+
 }, { threshold: 0.1 });
+
 document.querySelectorAll('.anim').forEach(el => observer.observe(el));
 
+
+
 function handleSubmit(e){
+
   e.preventDefault();
+
   const btn = document.getElementById('submitBtn');
+
   btn.innerHTML = `Enviado com sucesso!`;
+
   btn.style.background = '#2EE65C';
+
   btn.style.color = '#000';
+
   setTimeout(() => {
+
     btn.innerHTML = `Enviar para Engenharia`;
+
     btn.style.background = '';
+
     btn.style.color = '';
+
   }, 3000);
+
 }
+
 </script>
+
 </body>
+
 </html>
